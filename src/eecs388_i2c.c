@@ -64,8 +64,8 @@ void set_up_I2C(){
 
 
 void breakup(int bigNum, uint8_t* low, uint8_t* high){
-    low = bigNum & 0xFF;
-    high = bigNum >> 8;
+    *low = bigNum & 0xFF;
+    *high = bigNum >> 8;
 }
 
 void steering(int angle){

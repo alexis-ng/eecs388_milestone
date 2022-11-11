@@ -5,7 +5,7 @@
 
 
 struct metal_i2c *i2c;
-uint8_t bufWrite[5];
+uint8_t bufWrite[9];
 uint8_t bufRead[1];
 
 
@@ -72,31 +72,49 @@ void steering(int angle){
     
    
    int valToBreak = getServoCycle(angle);
-   bufWrite[0] = PCA9685_LED1_ON_L;
+   bufWrite[0] = PCA9685_LED0_ON_L + 4;
    bufWrite[1] = 0;
-   bufWrite[4] = 0;
-   breakup(valToBreak, &bufWrite[2], &bufWrite[3]);
+   bufWrite[2] = 0;
+   breakup(valToBreak, &bufWrite[3], &bufWrite[4]);
    metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
 
 
 }
 
 void stopMotor(){
-    /*
-        Write Task 3 code here
-    */
+    bufWrite[0] = PCA9685_LED0_ON_L;
+    bufWrite[1] = 0;
+    bufWrite[2] = 0;
+    breakup(280, &bufWrite[3], &bufWrite[4]);
+    delay(2000);
+    metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
+    
 }
 
 void driveForward(uint8_t speedFlag){
     /*
         Write Task 4 code here
     */
+
+   bufWrite[0] = PCA9685_LED0_ON_L;
+   bufWrite[1] = 0;
+   bufWrite[2] = 0;
+   if(speedFlag == 1) breakup(290, &bufWrite[3], &bufWrite[4]);
+   else if(speedFlag == 2) breakup(305, &bufWrite[3], &bufWrite[4]);
+   else if(speedFlag == 3) breakup(307, &bufWrite[3], &bufWrite[4]);
+   metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
+
 }
 
+
 void driveReverse(uint8_t speedFlag){
-    /*
-        Write task 5 code here
-    */
+    bufWrite[0] = PCA9685_LED0_ON_L;
+    bufWrite[1] = 0;
+    bufWrite[2] = 0;
+    if(speedFlag == 1) breakup(257, &bufWrite[3], &bufWrite[4]);
+    else if(speedFlag == 2) breakup(255, &bufWrite[3], &bufWrite[4]);
+    else if(speedFlag == 3) breakup(253, &bufWrite[3], &bufWrite[4]);
+    metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
 }
 
 
@@ -106,11 +124,13 @@ int main()
 
     /*
         Add function calls here to complete task 6
-    */
-   uint8_t hi;
+        uint8_t hi;
    uint8_t bye;
    breakup(1234, &hi, &bye);
    printf("%d", hi);
+    */
+   
+   delay(2000);
    steering(45);
    steering(0);
    steering(30);

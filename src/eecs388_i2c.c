@@ -69,51 +69,14 @@ void breakup(int bigNum, uint8_t* low, uint8_t* high){
 }
 
 void steering(int angle){
-    /*
-        Write Task 2 code here
-    */
-
-   /* Changing Steering Heading */
-    /*
-        -Task 2: using getServoCycle(), bufWrite, bufRead, 
-        breakup(), and and metal_i2c_transfer(), implement 
-        the function defined above to control the servo
-        by sending it an angle ranging from -45 to 45.
-
-        -Use the getServoCycle function to get the value to 
-        breakup. 
-
-        ex: 
-        int valToBreak = getServoCycle(45);
-        // getServoCycle returns the PWM mapping of steering angle -> duty cycle
-        // the above line sets valToBreak to 355
-        
-        -Note: the motor's speed controller is either 
-        LED0 or LED1 depending on where its plugged into 
-        the board. 
-            If it's LED0, use PCA9685_LED0_ON_L
-            If it's LED1, use PCA9685_LED1_ON_L
-
-        -Example use from main function:
-        steering(0); -> driving angle forward
-
-        _sucess
-        (valtobreak, buffwrite[3], buffwrite[4])
-        buffwrite[0] = PC____0_L
-        buffwrite[1] = 0
-        buffwrite[2] = 0
-        sucess = transfer(i2c, PC____, buffwrite, 5, buffread, 1)
-    */
+    
    
    int valToBreak = getServoCycle(angle);
-   breakup(valToBreak, &bufWrite[3], &bufWrite[4]);
-   bufWrite[0] = PCA9685_LED0_ON_L;
+   bufWrite[0] = PCA9685_LED1_ON_L;
    bufWrite[1] = 0;
-   bufWrite[2] = 0;
+   bufWrite[4] = 0;
+   breakup(valToBreak, &bufWrite[2], &bufWrite[3]);
    metal_i2c_transfer(i2c,PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
-
-
-   
 
 
 }

@@ -5,7 +5,7 @@
 
 
 struct metal_i2c *i2c;
-uint8_t bufWrite[9];
+uint8_t bufWrite[5];
 uint8_t bufRead[1];
 
 
@@ -106,7 +106,7 @@ void steering(int angle){
     */
    
    int valToBreak = getServoCycle(angle);
-   breakup(valToBreak, bufWrite[3], bufWrite[4]);
+   breakup(valToBreak, &bufWrite[3], &bufWrite[4]);
    bufWrite[0] = PCA9685_LED0_ON_L;
    bufWrite[1] = 0;
    bufWrite[2] = 0;
@@ -148,6 +148,11 @@ int main()
    uint8_t bye;
    breakup(1234, &hi, &bye);
    printf("%d", hi);
+   steering(45);
+   steering(0);
+   steering(30);
+   steering(40);
+   steering(45);
 }
 /* Defining the breakup function */
 /*

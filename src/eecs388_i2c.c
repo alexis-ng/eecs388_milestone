@@ -65,7 +65,7 @@ void set_up_I2C(){
 
 void breakup(int bigNum, uint8_t* low, uint8_t* high){
     *low = bigNum & 0xFF;
-    *high = bigNum >> 8;
+    *high = (bigNum >> 8)& 0xFF;
 }
 
 void steering(int angle){
@@ -86,7 +86,6 @@ void stopMotor(){
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     breakup(280, &bufWrite[3], &bufWrite[4]);
-    delay(2000);
     metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
     
 }
@@ -121,6 +120,7 @@ void driveReverse(uint8_t speedFlag){
 int main()
 {
     set_up_I2C();
+    stopMotor();
 
     /*
         Add function calls here to complete task 6

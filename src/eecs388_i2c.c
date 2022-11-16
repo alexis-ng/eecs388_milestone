@@ -82,7 +82,7 @@ void steering(int angle){
 }
 
 void stopMotor(){
-    bufWrite[0] = PCA9685_LED0_ON_L;
+    bufWrite[0] = PCA9685_LED1_ON_L;
     bufWrite[1] = 0;
     bufWrite[2] = 0;
     breakup(280, &bufWrite[3], &bufWrite[4]);
@@ -95,24 +95,24 @@ void driveForward(uint8_t speedFlag){
         Write Task 4 code here
     */
 
-   bufWrite[0] = PCA9685_LED0_ON_L;
+   bufWrite[0] = PCA9685_LED1_ON_L;
    bufWrite[1] = 0;
    bufWrite[2] = 0;
-   if(speedFlag == 1) breakup(290, &bufWrite[3], &bufWrite[4]);
-   else if(speedFlag == 2) breakup(305, &bufWrite[3], &bufWrite[4]);
-   else if(speedFlag == 3) breakup(307, &bufWrite[3], &bufWrite[4]);
+   if(speedFlag == 1) breakup(313, &bufWrite[3], &bufWrite[4]);
+   else if(speedFlag == 2) breakup(315, &bufWrite[3], &bufWrite[4]);
+   else if(speedFlag == 3) breakup(317, &bufWrite[3], &bufWrite[4]);
    metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
 
 }
 
 
 void driveReverse(uint8_t speedFlag){
-    bufWrite[0] = PCA9685_LED0_ON_L;
+    bufWrite[0] = PCA9685_LED1_ON_L;
     bufWrite[1] = 0;
     bufWrite[2] = 0;
-    if(speedFlag == 1) breakup(257, &bufWrite[3], &bufWrite[4]);
-    else if(speedFlag == 2) breakup(255, &bufWrite[3], &bufWrite[4]);
-    else if(speedFlag == 3) breakup(253, &bufWrite[3], &bufWrite[4]);
+    if(speedFlag == 1) breakup(267, &bufWrite[3], &bufWrite[4]);
+    else if(speedFlag == 2) breakup(265, &bufWrite[3], &bufWrite[4]);
+    else if(speedFlag == 3) breakup(263, &bufWrite[3], &bufWrite[4]);
     metal_i2c_transfer(i2c, PCA9685_I2C_ADDRESS, bufWrite, 5, bufRead, 1);
 }
 
@@ -120,22 +120,25 @@ void driveReverse(uint8_t speedFlag){
 int main()
 {
     set_up_I2C();
+    
+    // calibrate
+    stopMotor();
+    delay(2000);
+    steering(0);
+    delay(2000);
+    driveForward(1);
+    delay(2000);
+    steering(20);
+    delay(2000);
+    stopMotor();
+    delay(2000);
+    driveReverse(1);
+    delay(2000);
+    steering(0);
+    delay(2000);
     stopMotor();
 
-    /*
-        Add function calls here to complete task 6
-        uint8_t hi;
-   uint8_t bye;
-   breakup(1234, &hi, &bye);
-   printf("%d", hi);
-    */
-   
-   delay(2000);
-   steering(45);
-   steering(0);
-   steering(30);
-   steering(40);
-   steering(45);
+
 }
 /* Defining the breakup function */
 /*
